@@ -13,7 +13,7 @@ function db() {
     };
 
     this.aquire = function (callback) {
-        this.pool.getConnections(function (err,connection) {
+        this.pool.getConnection(function (err,connection) {
             callback(err,connection);
         });
     };
