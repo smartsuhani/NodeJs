@@ -15,11 +15,12 @@ function user() {
     };
 
     this.create = function (user,res) {
-        var post = {fullname : user.firstname+" "+user.lastname, username : user.username,email_id:user.email_id,password:md5(user.password),contact_no:user.contact_no};
+        query1 = "insert into user (fullname,username,email_id,password,contact_no) values('"+(user.firstname+user.lastname)+"','"+user.username+"','"+user.email_id+"','"+user.password+"','"+user.contact_no+"')";
         dbconn.aquire(function (err,con) {
-            con.query('insert into user (fullname,username,email_id,password,contact_no) VALUES (?)',post,function (err,result) {
+            con.query(query1,function (err,result) {
                 con.release();
                 if(err){
+                    console.log(err);
                     res.send({status:1,message:'User creation failed'});
                 }else{
                     res.send({status:0,message:'User created successfully'+result});
@@ -29,8 +30,9 @@ function user() {
     };
 
     this.update = function(user, res) {
+        query1 = "update user set username = '"+user.newname+"' where username = '"+user.oldname+"'";
         connection.acquire(function(err, con) {
-            con.query('update user set ? where username = ?', [user, user.username], function(err, result) {
+            con.query(query1, function(err, result) {
                 con.release();
                 if (err) {
                     res.send({status: 1, message: 'user update failed'});
@@ -42,8 +44,9 @@ function user() {
     };
 
     this.delete = function(username, res) {
+        query1  = "delete from user where username = '"+username+"'";
         connection.acquire(function(err, con) {
-            con.query('delete from user where username = ?', [username], function(err, result) {
+            con.query(query1, function(err, result) {
                 con.release();
                 if (err) {
                     res.send({status: 1, message: 'Failed to delete'});
